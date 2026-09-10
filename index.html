@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Usman — Technical Artist &amp; Conversational AI Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink-900:#12171C;
+    --ink-800:#1B2329;
+    --ink-700:#293339;
+    --line:#38434A;
+    --paper:#E7E4DA;
+    --paper-dim:#A7AAA1;
+    --brass:#C79A3D;
+    --brass-dim:#8A6E30;
+    --max-w:1120px;
+    --gutter:clamp(20px, 5vw, 64px);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink-900);
+    color:var(--paper);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:700;
+    letter-spacing:0.01em;
+    margin:0;
+    color:var(--paper);
+  }
+
+  a{color:var(--brass); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--brass);
+    outline-offset:3px;
+  }
+
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.8rem;
+    color:var(--paper-dim);
+  }
+
+  /* ---------- layout shell with blueprint corner marks ---------- */
+  .sheet{
+    position:relative;
+    max-width:var(--max-w);
+    margin:0 auto;
+    padding:0 var(--gutter);
+  }
+
+  .section{
+    position:relative;
+    padding:88px 0;
+    border-top:1px solid var(--line);
+  }
+
+  .section:first-of-type{border-top:none;}
+
+  .corner{
+    position:fixed;
+    width:22px; height:22px;
+    border-color:var(--brass-dim);
+    opacity:0.55;
+    z-index:5;
+    pointer-events:none;
+  }
+  .corner.tl{top:18px; left:18px; border-top:1px solid; border-left:1px solid;}
+  .corner.tr{top:18px; right:18px; border-top:1px solid; border-right:1px solid;}
+  .corner.bl{bottom:18px; left:18px; border-bottom:1px solid; border-left:1px solid;}
+  .corner.br{bottom:18px; right:18px; border-bottom:1px solid; border-right:1px solid;}
+  @media (max-width:600px){ .corner{display:none;} }
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:10;
+    background:rgba(18,23,28,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px var(--gutter);
+    max-width:var(--max-w); margin:0 auto;
+  }
+  .wordmark{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:700; font-size:1.25rem; color:var(--paper);
+    letter-spacing:0.02em;
+  }
+  .wordmark span{color:var(--brass);}
+  nav ul{list-style:none; display:flex; gap:28px; margin:0; padding:0;}
+  nav a{color:var(--paper-dim); font-size:0.92rem;}
+  nav a:hover{color:var(--brass); text-decoration:none;}
+  @media (max-width:640px){ nav ul{gap:16px;} nav a{font-size:0.82rem;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding-top:96px;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:48px;
+    align-items:center;
+  }
+  @media (max-width:860px){ .hero{grid-template-columns:1fr; padding-top:56px;} }
+
+  .hero h1{
+    font-size:clamp(2.4rem, 5.4vw, 3.8rem);
+    line-height:1.04;
+    max-width:14ch;
+  }
+  .hero .lede{
+    margin-top:22px;
+    max-width:46ch;
+    color:var(--paper-dim);
+    font-size:1.05rem;
+  }
+  .hero .cta-row{
+    margin-top:34px;
+    display:flex; gap:16px; flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    padding:12px 22px;
+    border:1px solid var(--brass-dim);
+    color:var(--paper);
+    font-size:0.92rem;
+    font-family:'IBM Plex Sans', sans-serif;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .btn:hover{ border-color:var(--brass); background:rgba(199,154,61,0.08); text-decoration:none;}
+  .btn.primary{ background:var(--brass); color:var(--ink-900); border-color:var(--brass); font-weight:600;}
+  .btn.primary:hover{ background:#d9ac52; }
+
+  .readout{
+    margin-top:28px;
+    display:flex; gap:28px; flex-wrap:wrap;
+  }
+  .readout div{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--paper-dim); }
+  .readout strong{ display:block; color:var(--paper); font-size:1.4rem; font-family:'Big Shoulders Display'; font-weight:700; }
+
+  /* schematic illustration */
+  .schematic-wrap{
+    position:relative;
+    border:1px solid var(--line);
+    background:
+      linear-gradient(var(--ink-800), var(--ink-800)) padding-box,
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(255,255,255,0.025) 27px, rgba(255,255,255,0.025) 28px),
+      repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(255,255,255,0.025) 27px, rgba(255,255,255,0.025) 28px);
+    aspect-ratio:4/3.4;
+    display:flex; align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .schematic-wrap svg{ width:100%; height:100%; }
+  .schematic-wrap .tag{
+    position:absolute; bottom:10px; left:14px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--paper-dim);
+  }
+  .draw-line{
+    stroke-dasharray:1400;
+    stroke-dashoffset:1400;
+    animation:draw 2.6s ease forwards 0.3s;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @media (prefers-reduced-motion: reduce){
+    .draw-line{ animation:none; stroke-dashoffset:0; }
+    html{ scroll-behavior:auto; }
+  }
+
+  /* ---------- about ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:48px;
+  }
+  @media (max-width:700px){ .about-grid{grid-template-columns:1fr; gap:20px;} }
+  .about-grid h2{ font-size:1.7rem; }
+  .about-grid p{ max-width:62ch; color:var(--paper); }
+  .about-grid p + p{ margin-top:16px; color:var(--paper-dim); }
+
+  /* ---------- capabilities ---------- */
+  .cap-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-top:36px;
+  }
+  @media (max-width:700px){ .cap-grid{grid-template-columns:1fr;} }
+  .cap-col{ background:var(--ink-900); padding:28px 30px; }
+  .cap-col h3{ font-size:1.15rem; color:var(--brass); font-family:'IBM Plex Sans', sans-serif; font-weight:600; }
+  .cap-col ul{ margin:18px 0 0; padding:0; list-style:none; }
+  .cap-col li{
+    padding:10px 0;
+    border-top:1px solid var(--line);
+    color:var(--paper-dim);
+    font-size:0.95rem;
+  }
+  .cap-col li:first-child{ border-top:none; }
+  .cap-col li b{ color:var(--paper); font-weight:500; }
+
+  /* ---------- skills ---------- */
+  .skills-groups{
+    margin-top:36px;
+    display:grid;
+    gap:32px;
+  }
+  .skill-group .group-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.74rem;
+    color:var(--brass-dim);
+    margin-bottom:14px;
+  }
+  .chip-row{
+    display:flex; flex-wrap:wrap; gap:10px;
+  }
+  .chip{
+    border:1px solid var(--line);
+    padding:8px 14px;
+    font-size:0.88rem;
+    color:var(--paper);
+    background:var(--ink-800);
+  }
+
+  /* ---------- work ---------- */
+  .work-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    margin-top:36px;
+  }
+  @media (max-width:760px){ .work-grid{grid-template-columns:1fr;} }
+  .work-card{
+    border:1px solid var(--line);
+    padding:26px 26px 24px;
+    display:flex; flex-direction:column; height:100%;
+  }
+  .work-card .spec{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--brass-dim); margin-bottom:10px; }
+  .work-card h3{ font-family:'IBM Plex Sans'; font-weight:600; font-size:1.15rem; color:var(--paper); }
+  .work-card p{ color:var(--paper-dim); font-size:0.94rem; margin-top:10px; flex-grow:1; }
+  .work-card .link-row{ margin-top:18px; font-size:0.88rem; }
+  .work-card.assistant-card{ border-color:var(--brass-dim); }
+
+  /* ---------- contact ---------- */
+  .contact-inner{
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:40px;
+  }
+  @media (max-width:760px){ .contact-inner{grid-template-columns:1fr;} }
+  .contact-inner h2{ font-size:2rem; max-width:14ch; }
+  .contact-list{ margin-top:24px; }
+  .contact-list div{ padding:12px 0; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; }
+  .contact-list div:first-child{ border-top:none; }
+  .contact-list .k{ color:var(--paper-dim); font-size:0.85rem; }
+  .contact-list .v{ font-family:'IBM Plex Mono', monospace; font-size:0.9rem; }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:26px var(--gutter);
+    text-align:center;
+    color:var(--paper-dim);
+    font-size:0.8rem;
+  }
+
+  /* ---------- assistant launcher (placeholder — wire to backend later) ---------- */
+  .assistant-launcher{
+    position:fixed; right:22px; bottom:22px; z-index:20;
+  }
+  .assistant-launcher button{
+    background:var(--brass); color:var(--ink-900);
+    border:none; border-radius:999px;
+    width:56px; height:56px;
+    font-family:'Big Shoulders Display'; font-weight:700; font-size:1.1rem;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,0,0,0.35);
+  }
+  .assistant-panel{
+    display:none;
+    position:absolute; right:0; bottom:70px;
+    width:280px;
+    background:var(--ink-800);
+    border:1px solid var(--line);
+    padding:18px;
+    font-size:0.88rem;
+    color:var(--paper-dim);
+  }
+  .assistant-panel.open{ display:block; }
+  .assistant-panel h4{ margin:0 0 8px; color:var(--paper); font-family:'IBM Plex Sans'; font-size:0.95rem; }
+</style>
+</head>
+<body>
+
+<div class="corner tl"></div>
+<div class="corner tr"></div>
+<div class="corner bl"></div>
+<div class="corner br"></div>
+
+<header>
+  <div class="nav-row">
+    <div class="wordmark">USMAN<span>.</span></div>
+    <nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="sheet">
+
+  <section class="section hero" id="top">
+    <div>
+      <h1>Detail that survives close inspection.</h1>
+      <p class="lede">
+        I'm Usman — a technical artist and conversational AI developer based in Aachen, Germany.
+        I spent three years modeling hard-surface military vehicles and aircraft before moving
+        into real-time 3D tooling and voice-driven AI systems.
+      </p>
+      <div class="cta-row">
+        <a href="#work" class="btn primary">See the work</a>
+        <a href="#contact" class="btn">Get in touch</a>
+      </div>
+      <div class="readout">
+        <div><strong>82+</strong>models published</div>
+        <div><strong>243K+</strong>portfolio views</div>
+        <div><strong>2016–</strong>hard-surface &amp; real-time work</div>
+      </div>
+    </div>
+
+    <div class="schematic-wrap" aria-hidden="true">
+      <svg viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- simple hard-surface aircraft wireframe, drawn as a single deliberate load-in moment -->
+        <g stroke="#C79A3D" stroke-width="1.4" class="draw-line">
+          <path d="M40 170 L360 170" stroke-opacity="0.35"/>
+          <path d="M60 170 L150 140 L250 140 L340 170 L250 195 L150 195 Z"/>
+          <path d="M150 140 L150 195"/>
+          <path d="M250 140 L250 195"/>
+          <path d="M180 140 L165 90 L200 120 L235 90 L220 140"/>
+          <path d="M150 168 L60 120 M150 172 L60 220"/>
+          <path d="M250 168 L340 120 M250 172 L340 220"/>
+          <circle cx="120" cy="182" r="9"/>
+          <circle cx="280" cy="182" r="9"/>
+        </g>
+      </svg>
+      <div class="tag mono">FIG. 01 — HARD-SURFACE STUDY</div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="about-grid">
+      <h2>About</h2>
+      <div>
+        <p>
+          Between 2016 and 2019 I worked as a professional game artist in Lahore, specializing in
+          hard-surface modeling of military vehicles and aircraft — the kind of work where a rivet
+          out of place or a panel line that doesn't read at a glance gets noticed.
+        </p>
+        <p>
+          I'm now completing an M.Sc. in Computational Social Systems (Human-Technology Interaction)
+          at RWTH Aachen, where my research looks at how anthropomorphic cues in voice and avatar
+          agents shape trust and reflection. Alongside the 3D work, I build the real-time systems
+          that make conversational AI actually feel responsive — Three.js front-ends, WebSocket
+          backends, and voice agents running on the OpenAI Realtime API.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <h2>Skills</h2>
+    <div class="skills-groups">
+      <div class="skill-group">
+        <div class="group-label">3D &amp; rendering</div>
+        <div class="chip-row">
+          <span class="chip">Blender</span>
+          <span class="chip">Hard-surface modeling</span>
+          <span class="chip">PBR texturing</span>
+          <span class="chip">UV layout &amp; baking</span>
+          <span class="chip">Game-ready topology</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="group-label">Real-time &amp; web</div>
+        <div class="chip-row">
+          <span class="chip">Three.js</span>
+          <span class="chip">React</span>
+          <span class="chip">Node.js</span>
+          <span class="chip">WebSockets</span>
+          <span class="chip">HTML5 Canvas</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="group-label">Conversational AI</div>
+        <div class="chip-row">
+          <span class="chip">OpenAI Realtime API</span>
+          <span class="chip">OpenAI Whisper</span>
+          <span class="chip">OpenAI TTS</span>
+          <span class="chip">Supabase</span>
+          <span class="chip">Prompt &amp; persona design</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cap-grid" style="margin-top:44px;">
+      <div class="cap-col">
+        <h3>Technical Art</h3>
+        <ul>
+          <li><b>Hard-surface modeling</b> — military vehicles &amp; aircraft, Blender</li>
+          <li><b>Real-time rendering</b> — PBR shading, texture &amp; material authoring</li>
+          <li><b>Three.js pipelines</b> — in-browser viewers and configurators</li>
+          <li><b>Asset optimization</b> — game-ready topology and bakes</li>
+        </ul>
+      </div>
+      <div class="cap-col">
+        <h3>Conversational AI</h3>
+        <ul>
+          <li><b>Voice agents</b> — OpenAI Realtime API over WebSockets</li>
+          <li><b>Full-stack builds</b> — React front-ends, Node.js backends</li>
+          <li><b>Data &amp; persistence</b> — Supabase-backed conversation state</li>
+          <li><b>Applied research</b> — anthropomorphic cues in human-AI interaction</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <h2>Selected work</h2>
+    <div class="work-grid">
+
+      <div class="work-card">
+        <div class="spec">SKETCHFAB — 82 MODELS / 243K+ VIEWS</div>
+        <h3>Hard-surface military asset library</h3>
+        <p>
+          A growing library of military vehicles and aircraft, modeled and textured for
+          close inspection — the core of my 3D portfolio.
+        </p>
+        <div class="link-row"><a href="https://sketchfab.com/Uxxman" target="_blank" rel="noopener">View on Sketchfab →</a></div>
+      </div>
+
+      <div class="work-card">
+        <div class="spec">NODE.JS · WEBSOCKETS · OPENAI REALTIME API</div>
+        <h3>Voice &amp; avatar research agents</h3>
+        <p>
+          Two AI agent systems built for reflective-writing research at RWTH Aachen —
+          real-time voice and animated-avatar conditions, deployed and maintained end to end.
+        </p>
+      </div>
+
+      <div class="work-card">
+        <div class="spec">HTML5 CANVAS · PROMPT-GENERATED CHARACTERS</div>
+        <h3>Crimson Clash</h3>
+        <p>
+          A browser-based 2D fighting game prototype where characters are generated from a
+          prompt, with perks and nerfs assigned automatically from their traits.
+        </p>
+      </div>
+
+      <div class="work-card">
+        <div class="spec">M.SC. THESIS · 2×3 FACTORIAL STUDY</div>
+        <h3>Anthropomorphic cues in LLM-facilitated reflection</h3>
+        <p>
+          Research comparing chatbot, voice, and avatar modalities across scaffolding
+          conditions — examining how anthropomorphism shapes trust and reflection quality.
+        </p>
+      </div>
+
+      <div class="work-card assistant-card">
+        <div class="spec">REACT · NODE.JS · OPENAI REALTIME API — LIVE ON THIS SITE</div>
+        <h3>This site's own assistant</h3>
+        <p>
+          A text-and-voice agent built into this page, running on the same architecture as
+          the research agents above. Ask it about any project here — it answers about Usman,
+          not as him.
+        </p>
+        <div class="link-row"><a href="#" id="workAssistantLink">Talk to it →</a></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="contact-inner">
+      <div>
+        <h2>Let's build something.</h2>
+        <p class="lede" style="margin-top:16px;">
+          Open to freelance and studio work across technical art and conversational AI —
+          based in Aachen, available across the DACH region and the Netherlands.
+        </p>
+      </div>
+      <div class="contact-list mono">
+        <div><span class="k">Email</span><span class="v">your@email.here</span></div>
+        <div><span class="k">Sketchfab</span><span class="v"><a href="https://sketchfab.com/Uxxman" target="_blank" rel="noopener">Uxxman</a></span></div>
+        <div><span class="k">Location</span><span class="v">Aachen, DE</span></div>
+        <div><span class="k">Status</span><span class="v">Available for freelance</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © <span id="year"></span> Usman. Built by hand, one panel line at a time.
+</footer>
+
+<div class="assistant-launcher">
+  <div class="assistant-panel" id="assistantPanel">
+    <h4>Ask about Usman's work</h4>
+    <p style="margin:0;">The assistant isn't connected yet — this is a placeholder for the chat &amp; voice agent described in the site plan.</p>
+  </div>
+  <button id="assistantBtn" aria-haspopup="true" aria-expanded="false" aria-label="Open assistant">?</button>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const btn = document.getElementById('assistantBtn');
+  const panel = document.getElementById('assistantPanel');
+  btn.addEventListener('click', () => {
+    const open = panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+
+  document.getElementById('workAssistantLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    panel.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+</script>
+
+</body>
+</html>
